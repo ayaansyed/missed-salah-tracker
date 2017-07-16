@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Salah Tracker</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="popup.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- <script src="popup.js" charset="utf-8"></script> -->
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+          var links = document.getElementsByTagName("a");
+          // for (var i = 0; i < links.length; i++) {
+          //     (function () {
+          //         var ln = links[i];
+          //         var location = ln.href;
+          //         ln.onclick = function () {
+          //             chrome.tabs.create({ active: true, url: location});
+          //         };
+          //     })();
+          // }
+      });
+
+
+      function setDefaultValues(salah, salahString, inputName) {
+        if (salah == null) {
+          salah = 0;
+          localStorage.setItem(salahString, salah);
+        } else {
+          document.getElementById(inputName).value = salah;
+        }
+      }
+
+      function update(salah, value) {
+        localStorage.setItem(salah, value);
+      }
+
+      window.onload = function () {
+
+
+        // load all old data of prayers they missed
+        // if they type something new or use the arrows, save that to localStorage
+
+        // localStorage.setItem('name_of_the_variable', value_of_the_variable);
+        // localStorage.getItem('name_of_the_variable') ==> value_of_the_variable
+
+        // 1. Check if the localStorage exists for each salah
+        // 2. If it does exist, load it
+        // 3. If it doesn't, create the variables in the localStorage
+
+        // function called when you first open up the extension
+        // function start() {
+        //
+        // }
+
+
+        // localStorage is just a place where you can set keys to values
+        // xyz = 3
+        // localStorage.setItem(xyz, 3);
+
+        // now if we want to get xyz from the storage
+        // localStorage.getItem(xyz); ==> 3
+
+        // if salah = 'missedFajrSalahs'
+        // and value = 3
+
+
+        var missedFajr = localStorage.getItem('missedFajrSalahs');
+        var missedZuhar = localStorage.getItem('missedZuharSalahs');
+        var missedAsr = localStorage.getItem('missedAsrSalahs');
+        var missedMagrib = localStorage.getItem('missedMagribSalahs');
+        var missedIsha = localStorage.getItem('missedIshaSalahs');
+        // missedFajr is the value of how many Fajrs have been missed
+        // the second argument is what we call it in localStorage
+        // the third is the id of it in the html
+        setDefaultValues(missedFajr, 'missedFajrSalahs', 'fajrinput');
+        setDefaultValues(missedZuhar, 'missedZuharSalahs', 'Zuhar');
+        setDefaultValues(missedAsr, 'missedAsrSalahs', 'Asr');
+        setDefaultValues(missedMagrib, 'missedMagribSalahs', 'Magrib');
+        setDefaultValues(missedIsha, 'missedIshaSalahs', 'Isha');
+
+
+
+      }
+    </script>
+  </head>
+  <body>
+    <p>Missed Salah Tracker  <i class="fa fa-calendar" aria-hidden="true"></i></p>
+    <hr>
+    <label for="Fajr">Fajr : </label>
+    <input id="fajrinput" type="number" style="width: 100px;" onchange="update('missedFajrSalahs', this.value)"/>
+    <label for="Zuhar">Zuhar: </label>
+    <input id="Zuhar" type="number"style="width: 100px;" onchange="update('missedZuharSalahs', this.value)"/>
+    <label for="Asr">Asr : </label>
+    <input id="Asr" type="number" style="width: 100px;" onchange="update('missedAsrSalahs', this.value)"/>
+    <label for="Magrib">Magrib: </label>
+    <input id="Magrib" type="number" style="width: 100px;" onchange="update('missedMagribSalahs', this.value)"/>
+    <label for="Isha">Isha : </label>
+    <input id="Isha" type="number" style="width: 100px;" onchange="update('missedIshaSalahs', this.value)"/>
+
+    <hr>
+
+    <p> <img src="mosque.png" alt="">
+      <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
+      To contact developer <a target="_blank" href="http://ayaansyed.com/index.html">click here</a></p>
+
+  </body>
+</html>

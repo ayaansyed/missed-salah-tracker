@@ -1,0 +1,43 @@
+label {
+color:rgb(213, 116, 27);
+font-family: comic sans MS ;
+
+}
+
+input{
+    border: 2px solid rgb(150, 168, 147);
+    border-radius: 4px;
+    font-family: comic sans MS;
+    color:rgb(13, 204, 130);
+
+}
+
+p {
+  color:rgb(13, 204, 130);
+  font-family: comic sans MS ;
+  text-align: center;
+  font-size: 15px
+}
+
+hr {
+display : block;
+margin-top: 0.5em;
+margin-bottom: 0,5em;
+margin-left: auto;
+margin-right: auto;
+border-style: inset;
+border-width: 1px;
+}
+
+a{
+text-decoration: none;
+color:rgb(150, 168, 147);
+}
+
+a:hover {
+color:rgb(213, 116, 27);
+}
+
+a:active {
+    color:rgb(213, 116, 27);
+}
