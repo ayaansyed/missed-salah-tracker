@@ -1,16 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var links = document.getElementsByTagName("a");
-    for (var i = 0; i < links.length; i++) {
-        (function () {
-            var ln = links[i];
-            var location = ln.href;
-            ln.onclick = function () {
-                chrome.tabs.create({active: true, url: location});
-            };
-        })();
-    }
-});
-
 
 function setDefaultValues(salah, salahString, inputName) {
   if (salah == null) {
@@ -21,54 +8,81 @@ function setDefaultValues(salah, salahString, inputName) {
   }
 }
 
-function update(salah, value) {
-  localStorage.setItem(salah, value);
+function update (event) {
+  console.log(event);
+  console.log(event.target);
+  console.log(event.target.value);
+  console.log(event.target.salahString);
+  localStorage.setItem(event.target.salahString, event.target.value);
 }
 
-window.onload = function () {
+function sendNotification(id, options) {
+  chrome.notifications.create(id, options);
+  localStorage.setItem('missedSalahNotifID', id);
+}
 
-
-  // load all old data of prayers they missed
-  // if they type something new or use the arrows, save that to localStorage
-
-  // localStorage.setItem('name_of_the_variable', value_of_the_variable);
-  // localStorage.getItem('name_of_the_variable') ==> value_of_the_variable
-
-  // 1. Check if the localStorage exists for each salah
-  // 2. If it does exist, load it
-  // 3. If it doesn't, create the variables in the localStorage
-
-  // function called when you first open up the extension
-  // function start() {
-  //
-  // }
-
-
-  // localStorage is just a place where you can set keys to values
-  // xyz = 3
-  // localStorage.setItem(xyz, 3);
-
-  // now if we want to get xyz from the storage
-  // localStorage.getItem(xyz); ==> 3
-
-  // if salah = 'missedFajrSalahs'
-  // and value = 3
-
+window.onload = function start() {
 
   var missedFajr = localStorage.getItem('missedFajrSalahs');
   var missedZuhar = localStorage.getItem('missedZuharSalahs');
   var missedAsr = localStorage.getItem('missedAsrSalahs');
   var missedMagrib = localStorage.getItem('missedMagribSalahs');
   var missedIsha = localStorage.getItem('missedIshaSalahs');
-  // missedFajr is the value of how many Fajrs have been missed
-  // the second argument is what we call it in localStorage
-  // the third is the id of it in the html
+  var notificationID = localStorage.getItem('missedSalahNotifID');
+
   setDefaultValues(missedFajr, 'missedFajrSalahs', 'fajrinput');
   setDefaultValues(missedZuhar, 'missedZuharSalahs', 'Zuhar');
   setDefaultValues(missedAsr, 'missedAsrSalahs', 'Asr');
   setDefaultValues(missedMagrib, 'missedMagribSalahs', 'Magrib');
   setDefaultValues(missedIsha, 'missedIshaSalahs', 'Isha');
 
+  var inputs = [
+    document.getElementById('fajrinput'),
+    document.getElementById('Zuhar'),
+    document.getElementById('Asr'),
+    document.getElementById('Magrib'),
+    document.getElementById('Isha')
+  ];
 
+  var salahStrings = [
+    'missedFajrSalahs',
+    'missedZuharSalahs',
+    'missedAsrSalahs',
+    'missedMagribSalahs',
+    'missedIshaSalahs'
+  ];
+
+]
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('change', update, false);
+    inputs[i].salahString = salahStrings[i];
+}
+
+var positiveNotificationOptions = {
+  type: 'basic',
+  title: 'You are doing great!',
+  message: 'Keep up the good work!',
+  iconUrl: 'Webp.net-resizeimage (2).png',
+};
+
+var negativeNotificationOptions = {
+  type: 'basic',
+  title: 'You have missed a lot of salahs!',
+  message: "You have missed a lot of Salahs. Time to pray! ",
+  iconUrl: 'Webp.net-resizeimage (2).png',
+}
+
+if (notificationID == null) {
+  notificationID = 0;
+  localStorage.setItem('missedSalahNotifID', notificationID);
+}
+
+if (missedFajr > 5 || missedZuhar > 5 || missedAsr > 5 || missedMagrib > 5 || missedIsha > 5) {
+  notificationID += 1
+  sendNotification(notificationID, negativeNotificationOptions);
+} else if (missedFajr <= 1 || missedZuhar <= 1 || missedAsr <= 1 || missedMagrib <= 1 || missedIsha <= 1) {
+  notificationID += 1
+  sendNotification(notificationID, positiveNotificationOptions);
+}
 
 }
